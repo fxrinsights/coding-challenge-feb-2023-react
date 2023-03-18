@@ -48,7 +48,11 @@ coding challenge, so we hope it's clear enough.) good luck!
 
 for our configuration, it would be really beneficial if we were able to
 *toggle* an overlay where each PdfObject is visualized (as a rectangle/line) on
-top of the current visible PDF page.
+top of the current visible PDF page. so you can turn this overlay on and off.
+
+you can retrieve the objects with the (mock) query
+=useFetchPdfPageObjectsQuery=, located in =src/features/api/apiSlice=. you pass
+this method a page's index, and returns the objects on that page.
 
 besides that, we have three interactions we would like to be able to have:
 
@@ -94,6 +98,12 @@ above. don't spend tooo much time on it!
 
 * tips
 
+- the query hook to get the PdfObjects for a page is something specific to this
+  use-case. we might want to reuse the overlay component(s) in a different
+  context, where we would retrieve the PdfObjects in a different way. it would
+  be nice if your implementation of the overlay is reusable (in theory) with a
+  different way of providing/retrieving the PdfObjects (so, not directly using
+  that query).
 - think about which styles can you use on the PdfObject visualisations. not
   only to differentiate between object_types, but also to indicate its state
   (hover, selected, touching the edge of a shared bbox). you could use colour,
