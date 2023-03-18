@@ -1,0 +1,139 @@
+#+TITLE: FXR React coding challenge - february 2023
+#+BIND: org-export-use-babel nil
+#+AUTHOR: July
+#+EMAIL: <july@fxr-insights.com>
+#+DATE: February, 2023
+#+LATEX: \setlength\parindent{0pt}
+#+LATEX_HEADER: \usepackage{minted}
+#+LATEX_HEADER: \usepackage[margin=1.2in]{geometry}
+#+LATEX_HEADER: \usepackage{mathpazo}
+#+LATEX_HEADER: \usepackage{adjustbox}
+#+LATEX_HEADER_EXTRA:  \usepackage{mdframed}
+#+LATEX_HEADER_EXTRA: \BeforeBeginEnvironment{minted}{\begin{mdframed}}
+#+LATEX_HEADER_EXTRA: \AfterEndEnvironment{minted}{\end{mdframed}}
+#+LATEX_HEADER_EXTRA: \BeforeBeginEnvironment{tabular}{\begin{adjustbox}{center}}
+#+LATEX_HEADER_EXTRA: \AfterEndEnvironment{tabular}{\end{adjustbox}}
+#+MACRO: NEWLINE @@latex:\\@@ @@html:<br>@@
+#+PROPERTY: header-args :exports both :session README :cache :results value
+#+OPTIONS: ^:nil
+#+LATEX_COMPILER: pdflatex
+
+* introduction
+
+in this coding challenge, we want you to implement a new feature for PDF
+previews that we use in our internal dashboard.
+
+we receive a lot of documents from different organisations, including PDFs. we
+have a pipeline set up in which we can configure exactly how we want to extract
+tabular (and non-tabular) data from a PDF file. in order to configure this,
+there are a couple of things we need to calculate over and over again using the
+objects (PdfObjects) present on a page.
+
+each PdfObject has (see =src/types.ts= for the type definition):
+- an =object_type= which can be LINE, SPAN, or RECT;
+- an =attributes= object/dictionary
+- =location_on_page=, which is a list of four numbers between 0 and 1,
+  indicating the relative position of the page (i.e., a =location_on_page= of
+  =[0, 0, 0.5, 1.0]= corresponds to an object covering the top half of the
+  page).
+
+we have provided a vite project which displays a PDF. it's up to you to design
+and implement the desired functionality below. we value well-written code and
+intuitive UX.
+
+and if you have any questions, let us know! (this is our first time creating a
+coding challenge, so we hope it's clear enough.) good luck!
+
+* desired functionality
+
+for our configuration, it would be really beneficial if we were able to
+*toggle* an overlay where each PdfObject is visualized (as a rectangle/line) on
+top of the current visible PDF page.
+
+besides that, we have three interactions we would like to be able to have:
+
+** on hover, display the attributes
+
+when you hover over a PdfObject, that object's attributes should be displayed
+(somewhere on the page). this doesn't have to be sophisticated; it could just
+be rendering of the attributes dictionary, but you can try to make it more
+intuitive/smart, if you wish.
+
+it should also be possible to copy (to the clipboard) the dictionary of
+attributes easily (for instance, by clicking when hovering over the box).
+
+** comparing two objects
+
+it should be possible to select a PdfObject and compare it to another PdfObject
+on the page. specifically, we want to see the relative bbox.
+
+there is a function in =src/utils.ts= called =getObjectComparison= which
+calculates what we want to see (when you give it two objects).
+
+if you are comparing two objects, then the copy to clipboard functionality
+described above should copy this 'comparison' (so the ={ rel_bbox }= object),
+instead of the attributes of the object you are hovering over.
+
+** (advanced) get objects touching edges of shared bbox
+
+we want to be able to select any number of PdfObjects, and perform a
+computation which checks which of those PdfObjects are aligned to the border of
+the rectangle which covers all the selected PdfObjects.
+
+again, there is a function in =src/utils.ts=, called
+=getObjectsTouchingEdgesOfSharedBbox=, which performs the calculation itself
+(when given an array of PdfObjects).
+
+we would like this to be displayed in the visualization in an intuitive manner.
+but the most important thing is that it should be possible to copy (to the
+clipboard) the =ax2touchingObject= which the function returns.
+
+this aspect of the implementation is a bit more tricky, especially in making it
+fit in intuitively with the other two pieces of functionality described
+above. don't spend tooo much time on it!
+
+* tips
+
+- think about which styles can you use on the PdfObject visualisations. not
+  only to differentiate between object_types, but also to indicate its state
+  (hover, selected, touching the edge of a shared bbox). you could use colour,
+  but also other attributes!
+- we are using the [[https://github.com/ben-rogerson/twin.macro][twin.macro]] library to style our components inline using
+  tailwindcss. it's not necessary to use (but it's an awesome library, so try
+  it out if you haven't yet!), but you can use the =theme= import to access
+  colours from the palette defined in =tailwind.config.cjs=.
+- you can use =location_on_page= + absolute positioning to position the objects
+  within a parent container (with same size as the PDF page).
+- there is a =Switch= component available which you can use if you wish.
+- you can use =useLocalstorageState= from the =rooks= library to use state
+  which persists across reloads. might be nice for certain UI states.
+
+* getting started
+
+** create a private fork
+
+please create a *private fork* by following the steps below. don't create a
+public fork, because other applicants might be able to read your solution. if
+you are unable to create a private fork, clone the repo, commit your solution,
+and send us a zip file of your solution.
+
+1. go to https://github.com/new/import
+2. enter the url of this repo, and create a new repository under your account
+   with visibility set to private.
+3. invite the following github users as collaborators: =jpjagt= and
+   =paulodder=.
+
+** setting up the environment
+
+install the dependencies:
+
+#+BEGIN_SRC python
+cd path/to/cloned/repo
+yarn install
+yarn dev
+#+END_SRC
+
+(you can also use =npm install && npm run dev=.)
+
+then, you can start working on the refactor. push your changes to github. once
+you're done, please send us a message (:
