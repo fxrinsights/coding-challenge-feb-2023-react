@@ -42,7 +42,10 @@ and implement the desired functionality below. we value well-written code and
 intuitive UX.
 
 and if you have any questions, let us know! (this is our first time creating a
-coding challenge, so we hope it's clear enough.) good luck!
+coding challenge, so we hope it's clear enough.) you can reach July by emailing
+=july @ [our domain name]=.
+
+good luck!
 
 * desired functionality
 
