@@ -99,6 +99,38 @@ this aspect of the implementation is a bit more tricky, especially in making it
 fit in intuitively with the other two pieces of functionality described
 above. don't spend tooo much time on it!
 
+** [NEW] search functionality
+
+so: i forgot to remove the =PdfObjectsOverlay.tsx= component (in =src/viewers=)
+which you were supposed to fully implement from scratch, which means that the
+only thing missing is to toggle it, and the advanced "touching-edges"
+functionality described above. *please feel free to use this component and
+implement the remaining parts.* but because of this, we are extending the
+challenge a bit so we can properly assess your decision-making in UX design and
+code organisation.
+
+thus, we also want you to implement a search functionality. it is a separate
+functionality from the overlay! it should be possible to:
+- enter a search query.
+- view a list of matches.
+- click on a match to go to the corresponding page (and ideally, to have the
+  matching area highlighted temporarily).
+
+above all, try to make it intuitive, snappy/fast, and without cluttering the
+design. keep in mind that in the app, we have many PDF files below each other,
+so the functionality should be contained within the card. (you could use a
+modal, if you want to.)
+
+the search can be simple (exact text match) or perhaps more fancy
+(case-insensitive option, fuzzy, etc.), and the list of results can be simple
+(a list of =page 1, bbox [10, ...]=) or more fancy (a preview of the
+surrounding area?). but again, don't spend too much time on it, just make sure
+it works well and smoothly.
+
+tip: you can implement your own search function, but can also look around to
+see if anyone's implemented it for =react-pdf= (the library we're using to
+display the PDF's).
+
 * tips
 
 - the query hook to get the PdfObjects for a page is something specific to this
